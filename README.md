@@ -1,103 +1,121 @@
-# New Nx Repository
+# Orders Tracking - Nx Monorepo
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A full-stack monorepo using Nx, React, Node.js/Express, and Kafka for event streaming.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 📋 Project Structure
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
-## Try the full Nx platform
-🚀 If you haven't connected to Nx Cloud yet, [complete your setup here](https://cloud.nx.app/setup/connect-workspace/guide). Get faster builds with remote caching, distributed task execution, and self-healing CI. [See how your workspace can benefit](#nx-cloud).
-## Generate a library
+- **`packages/frontend`**: React 18 + TypeScript web application
+- **`packages/backend`**: Node.js/Express API server with Kafka integration
+- **`packages/frontend-e2e`**: Cypress end-to-end tests for frontend
+- **`packages/backend-e2e`**: E2E tests for backend
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 20+
+- Docker (for Kafka and Zookeeper)
+- npm
+
+### Installation
+
+```bash
+npm install
 ```
 
-## Run tasks
+## 🎯 Running the Applications
 
-To build the library use:
+### 1. Start Kafka & Zookeeper (Docker)
 
-```sh
-npx nx build pkg1
+First, ensure Docker is running, then start the message broker:
+
+```bash
+# Start Zookeeper
+sudo docker run -d --name zookeeper -p 2181:2181 zookeeper:3.8
+
+# Start Kafka
+sudo docker run -d --name kafka -p 9092:9092 \
+  --link zookeeper \
+  --env KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \
+  --env KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 \
+  --env KAFKA_BROKER_ID=1 \
+  --env KAFKA_LISTENERS=PLAINTEXT://:9092 \
+  wurstmeister/kafka
 ```
 
-To run any task with Nx use:
+Verify Kafka is running:
 
-```sh
-npx nx <target> <project-name>
+```bash
+sudo docker ps
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### 2. Start Backend Server
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
-
-```
-npx nx release
+```bash
+npx nx serve backend
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+Backend runs on `http://localhost:3333`
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 3. Start Frontend Application (new terminal)
 
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+```bash
+npx nx serve frontend
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+Frontend runs on `http://localhost:4200`
 
-```sh
-npx nx sync:check
+## 📡 Testing the Integration
+
+### Send a message to Kafka via Backend
+
+```bash
+curl -X POST http://localhost:3333/send \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Hello Kafka!"}'
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+The backend will publish the message to Kafka, and the frontend will consume and display it.
 
-## Nx Cloud
+## 🛠️ Available Commands
 
-Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+```bash
+# Build all projects
+npx nx run-many --target=build --all
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+# Run linter
+npx nx run-many --target=lint --all
 
-### Set up CI (non-Github Actions CI)
+# Run tests
+npx nx run-many --target=test --all
 
-**Note:** This is only required if your CI provider is not GitHub Actions.
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+# View Nx project graph
+npx nx graph
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🧹 Cleanup Docker Containers
 
-## Install Nx Console
+```bash
+# Stop and remove containers
+sudo docker stop kafka zookeeper
+sudo docker rm kafka zookeeper
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## 📚 Technologies Used
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Frontend**: React 18, TypeScript, Webpack, Cypress
+- **Backend**: Express.js, Node.js, CORS, KafkaJS
+- **Message Queue**: Apache Kafka + Zookeeper
+- **Monorepo**: Nx
+- **Testing**: Jest, Cypress
+- **Linting**: ESLint, Prettier
 
-## Useful links
+## 🔗 Useful Resources
 
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
+- [Nx Documentation](https://nx.dev)
+- [React Documentation](https://react.dev)
+- [Express.js Guide](https://expressjs.com)
+- [KafkaJS Documentation](https://kafka.js.org)
 
 - [Discord](https://go.nx.dev/community)
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)

@@ -40,7 +40,9 @@ async function startConsumer() {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      //console.log(`Received message: ${message.value?.toString()}`);
+      console.log(
+        `Received topic: ${topic}, partition: ${partition} message: ${message.value?.toString()}`
+      );
       console.log(`Received message: ${message}`);
     },
   });
