@@ -1,21 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export function App() {
-  const [data, setData] = useState('');
+  const [message, setMessage] = useState('');
+  const [response, setResponse] = useState('');
 
-  useEffect(() => {
-    fetch('http://localhost:3333/')
-      .then((response) => response.text())
-      .then((text) => setData(text))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
+  const sendMessage = async () => {
+    if (!message) return;
+
+    try {
+      const res = await fetch('http://localhost:3333/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const text = await res.text();
+      setResponse(text);
+      setMessage('');
+    } catch (err) {
+      console.error(err);
+      setResponse('Failed to send message');
+    }
+  };
 
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <h1>Hello World from React frontend!</h1>
-      <p>This is a TypeScript React app inside NX monorepo.</p>
-      <strong>Data from backend....</strong>
-      <p>{data}</p>
+      <p>Send a message to Kafka via Node backend:</p>
+
+      <input
+        type="text"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Type your message"
+        style={{ width: 300, marginRight: 8 }}
+      />
+      <button onClick={sendMessage}>Send</button>
+
+      {response && <p style={{ marginTop: 10 }}>Response: {response}</p>}
     </div>
   );
 }
