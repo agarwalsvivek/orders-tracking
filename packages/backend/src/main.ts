@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import express from 'express';
-import { producer, consumer } from './kafka/kafka';
+import axios from 'axios';
 import cors from 'cors';
 
 const app = express();
@@ -20,32 +20,15 @@ app.listen(port, () => {
 // Endpoint to send message
 app.post('/send', async (req, res) => {
   const { message } = req.body;
+  console.log(`Received [BE]: ${message}`);
   try {
-    await producer.connect();
-    await producer.send({
-      topic: 'test-topic',
-      messages: [{ value: message }],
+    const response = await axios.post('http://localhost:3334/send', {
+      message,
     });
-    res.send(`Message sent: ${message}`);
+    console.log(`Sending [BE]: ${response.data}`);
+    res.send(response.data);
   } catch (error) {
     console.error(error);
     res.status(500).send('Failed to send message');
   }
 });
-
-// Start consumer
-async function startConsumer() {
-  await consumer.connect();
-  await consumer.subscribe({ topic: 'test-topic', fromBeginning: true });
-
-  await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
-      console.log(
-        `Received topic: ${topic}, partition: ${partition} message: ${message.value?.toString()}`
-      );
-      console.log(`Received message: ${message}`);
-    },
-  });
-}
-
-startConsumer().catch(console.error);

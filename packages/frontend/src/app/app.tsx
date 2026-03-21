@@ -39,7 +39,7 @@ export function App() {
       />
       <button onClick={sendMessage}>Send</button>
 
-      {response && <p style={{ marginTop: 10 }}>Response: {response}</p>}
+      {response && <p style={{ marginTop: 10 }}>{response}</p>}
     </div>
   );
 }
