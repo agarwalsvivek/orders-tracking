@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import RealtimeDashboard from './components/RealtimeDashboard';
 
 export function App() {
   const [message, setMessage] = useState('');
@@ -40,6 +41,8 @@ export function App() {
       <button onClick={sendMessage}>Send</button>
 
       {response && <p style={{ marginTop: 10 }}>{response}</p>}
+
+      <RealtimeDashboard />
     </div>
   );
 }
