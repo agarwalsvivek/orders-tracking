@@ -42,7 +42,7 @@ export function App() {
 
       {response && <p style={{ marginTop: 10 }}>{response}</p>}
 
-      <RealtimeDashboard />
+      {/* <RealtimeDashboard /> */}
     </div>
   );
 }

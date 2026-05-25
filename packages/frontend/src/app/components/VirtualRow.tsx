@@ -27,6 +27,10 @@ const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
 
   return (
     <div
+      role="row"
+      aria-label={`Asset ${data.name}, Value $${data.value.toFixed(
+        2
+      )}, Change ${data.change.toFixed(2)}%, Status ${data.status}`}
       style={{
         ...style,
         display: 'flex',
@@ -38,6 +42,7 @@ const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
       }}
     >
       <div
+        role="cell"
         style={{
           flex: '0 0 100px',
           fontFamily: 'JetBrains Mono, monospace',
@@ -46,10 +51,14 @@ const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
       >
         #{data.id.toString().padStart(5, '0')}
       </div>
-      <div style={{ flex: '1 1 auto', fontWeight: '600', fontSize: '15px' }}>
+      <div
+        role="cell"
+        style={{ flex: '1 1 auto', fontWeight: '600', fontSize: '15px' }}
+      >
         {data.name}
       </div>
       <div
+        role="cell"
         style={{
           flex: '0 0 150px',
           textAlign: 'right',
@@ -60,6 +69,7 @@ const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
         ${data.value.toFixed(2)}
       </div>
       <div
+        role="cell"
         style={{
           flex: '0 0 120px',
           textAlign: 'right',
@@ -71,7 +81,7 @@ const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
         {data.change > 0 ? '+' : ''}
         {data.change.toFixed(2)}%
       </div>
-      <div style={{ flex: '0 0 100px', textAlign: 'right' }}>
+      <div role="cell" style={{ flex: '0 0 100px', textAlign: 'right' }}>
         <span
           style={{
             display: 'inline-block',

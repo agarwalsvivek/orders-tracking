@@ -247,6 +247,7 @@ export default function RealtimeDashboard() {
 
       {/* Table Header */}
       <div
+        role="row"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -260,17 +261,39 @@ export default function RealtimeDashboard() {
           color: '#888',
         }}
       >
-        <div style={{ flex: '0 0 100px' }}>ID</div>
-        <div style={{ flex: '1 1 auto' }}>Asset Name</div>
-        <div style={{ flex: '0 0 150px', textAlign: 'right' }}>Value</div>
-        <div style={{ flex: '0 0 120px', textAlign: 'right' }}>Change</div>
-        <div style={{ flex: '0 0 100px', textAlign: 'right' }}>Status</div>
+        <div role="columnheader" style={{ flex: '0 0 100px' }}>
+          ID
+        </div>
+        <div role="columnheader" style={{ flex: '1 1 auto' }}>
+          Asset Name
+        </div>
+        <div
+          role="columnheader"
+          style={{ flex: '0 0 150px', textAlign: 'right' }}
+        >
+          Value
+        </div>
+        <div
+          role="columnheader"
+          style={{ flex: '0 0 120px', textAlign: 'right' }}
+        >
+          Change
+        </div>
+        <div
+          role="columnheader"
+          style={{ flex: '0 0 100px', textAlign: 'right' }}
+        >
+          Status
+        </div>
       </div>
 
       {/* Virtualized Table */}
       <div
         ref={containerRef}
         onScroll={handleScroll}
+        role="table"
+        aria-label="Real-time market data table"
+        aria-rowcount={data.length}
         style={{
           height: `calc(100vh - 320px)`,
           overflowY: 'auto',
@@ -278,6 +301,7 @@ export default function RealtimeDashboard() {
         }}
       >
         <div
+          role="rowgroup"
           style={{
             height: `${data.length * ROW_HEIGHT}px`,
             position: 'relative',
