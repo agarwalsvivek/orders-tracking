@@ -28,21 +28,23 @@ export function App() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>Hello World from React frontend!</h1>
-      <p>Send a message to Kafka via Node backend:</p>
+      <div style={{ padding: 20 }}>
+        <h1>Hello World from React frontend!</h1>
+        <p>Send a message to Kafka via Node backend:</p>
 
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type your message"
-        style={{ width: 300, marginRight: 8 }}
-      />
-      <button onClick={sendMessage}>Send</button>
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type your message"
+          style={{ width: 300, marginRight: 8 }}
+        />
+        <button onClick={sendMessage}>Send</button>
 
-      {response && <p style={{ marginTop: 10 }}>{response}</p>}
+        {response && <p style={{ margin: 10 }}>{response}</p>}
+      </div>
 
-      {/* <RealtimeDashboard /> */}
+      <RealtimeDashboard />
     </div>
   );
 }

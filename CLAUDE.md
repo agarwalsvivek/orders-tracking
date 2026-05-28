@@ -21,3 +21,27 @@
 - The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
 
 <!-- nx configuration end-->
+
+---
+
+# Project conventions
+
+## Stack
+
+- <!-- e.g. React 18, Java 21 / Spring Boot 3, Tailwind CSS -->
+
+## Code conventions
+
+- <!-- e.g. named exports only, React Query for server state -->
+
+## Testing
+
+- <!-- e.g. Vitest + React Testing Library for FE, JUnit 5 for BE -->
+
+## Folder structure
+
+- <!-- e.g. libs/ui for shared components, apps/api for Spring Boot -->
+
+## Things to never do
+
+- <!-- e.g. never fetch directly in components, always go through libs/api -->
