@@ -7,14 +7,14 @@ import {
   Users,
   DollarSign,
 } from 'lucide-react';
-import MockWebSocket from './MockWebSocket';
+import MockWebSocket, { TOTAL_ROWS } from './MockWebSocket';
 import StatCard from './StatCard';
 import VirtualRow from './VirtualRow';
 
 // Main Dashboard Component
 export default function RealtimeDashboard() {
   const [data, setData] = useState(() =>
-    Array.from({ length: 10000 }, (_, i) => ({
+    Array.from({ length: TOTAL_ROWS }, (_, i) => ({
       id: i,
       name: `Asset ${String.fromCharCode(65 + (i % 26))}${Math.floor(i / 26)}`,
       value: Math.random() * 10000,
@@ -150,7 +150,7 @@ export default function RealtimeDashboard() {
             <h1
               style={{
                 margin: 0,
-                fontSize: '32px',
+                fontSize: '24px',
                 fontWeight: '800',
                 letterSpacing: '-0.5px',
                 background: 'linear-gradient(135deg, #00ff88 0%, #00ccff 100%)',
@@ -194,7 +194,7 @@ export default function RealtimeDashboard() {
                 <span>{isConnected ? 'CONNECTED' : 'DISCONNECTED'}</span>
               </div>
               <span>•</span>
-              <span>10,000 ASSETS</span>
+              <span>{TOTAL_ROWS.toLocaleString()} ASSETS</span>
               <span>•</span>
               <span>LIVE UPDATES</span>
             </div>

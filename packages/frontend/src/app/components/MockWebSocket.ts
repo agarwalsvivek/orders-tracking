@@ -6,6 +6,8 @@ interface Update {
   timestamp: number;
 }
 
+export const TOTAL_ROWS = 10;
+
 type OnMessageCallback = (updates: Update[]) => void;
 
 // Mock WebSocket for demonstration - simulates real-time data updates
@@ -25,7 +27,7 @@ class MockWebSocket {
       const updateCount = Math.floor(Math.random() * 20) + 5; // 5-25 updates per batch
 
       for (let i = 0; i < updateCount; i++) {
-        const rowIndex = Math.floor(Math.random() * 10000);
+        const rowIndex = Math.floor(Math.random() * TOTAL_ROWS);
         updates.push({
           id: rowIndex,
           value: Math.random() * 10000,
@@ -41,7 +43,7 @@ class MockWebSocket {
       }
 
       this.onMessage(updates);
-    }, 100);
+    }, 200);
   }
 
   disconnect() {

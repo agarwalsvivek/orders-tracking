@@ -27,10 +27,9 @@ export function App() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <div style={{ padding: 20 }}>
-        <h1>Hello World from React frontend!</h1>
-        <p>Send a message to Kafka via Node backend:</p>
+    <div style={{ padding: 5 }}>
+      <div style={{ padding: 8 }}>
+        <p>Hello World. Send a message to Kafka via Node backend:</p>
 
         <input
           type="text"
