@@ -43,7 +43,7 @@ class MockWebSocket {
       }
 
       this.onMessage(updates);
-    }, 200);
+    }, 400);
   }
 
   disconnect() {
