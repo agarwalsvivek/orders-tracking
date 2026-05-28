@@ -1,3 +1,5 @@
+import './stat-card.scss';
+
 interface StatCardProps {
   icon: React.ReactNode;
   label: string;
@@ -7,57 +9,24 @@ interface StatCardProps {
 
 const StatCard = ({ icon, label, value, color }: StatCardProps) => {
   return (
-    <div
-      style={{
-        background: 'rgba(255, 255, 255, 0.03)',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: '12px',
-        padding: '8px',
-        transition: 'all 0.3s ease',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          marginBottom: '12px',
-        }}
-      >
+    <div className="stat-card">
+      <div className="stat-card__header">
         <div
+          className="stat-card__icon-container"
           style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
             background: `${color}22`,
             color: color,
-            border: `1px solid ${color}`,
+            borderColor: color,
           }}
         >
           {icon}
         </div>
-        <span
-          style={{
-            fontSize: '11px',
-            fontWeight: '600',
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase',
-            color: '#888',
-          }}
-        >
-          {label}
-        </span>
+        <span className="stat-card__label">{label}</span>
       </div>
       <div
+        className="stat-card__value"
         style={{
-          fontSize: '28px',
-          fontWeight: '800',
           color: color,
-          fontFamily: 'JetBrains Mono, monospace',
-          letterSpacing: '-0.5px',
         }}
       >
         {value}
