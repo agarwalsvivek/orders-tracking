@@ -38,7 +38,8 @@
         "buildTargetName": "build",
         "serveTargetName": "serve",
         "previewTargetName": "preview"
-      }
+      },
+      "exclude": ["packages/frontend/**/*"]
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -71,6 +72,10 @@
     "@nx/esbuild:esbuild": {
       "cache": true,
       "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "@nx/webpack:webpack": {
+      "cache": true,
       "inputs": ["production", "^production"]
     }
   },
