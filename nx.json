@@ -76,6 +76,7 @@
     },
     "@nx/webpack:webpack": {
       "cache": true,
+      "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     }
   },
