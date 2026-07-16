@@ -20,12 +20,12 @@ app.listen(port, () => {
 // Endpoint to send message
 app.post('/send', async (req, res) => {
   const { message } = req.body;
-  console.log(`Received [BE]: ${message}`);
+  console.log(`Received [BE]: ${JSON.stringify(message)}`);
   try {
     const response = await axios.post('http://localhost:3334/send', {
       message,
     });
-    console.log(`Sending [BE]: ${response.data}`);
+    console.log(`Sending [BE]: ${JSON.stringify(response.data)}`);
     res.send(response.data);
   } catch (error) {
     console.error(error);

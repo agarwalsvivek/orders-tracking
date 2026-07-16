@@ -7,14 +7,15 @@ import {
   Users,
   DollarSign,
 } from 'lucide-react';
-import MockWebSocket from './MockWebSocket';
+import MockWebSocket, { TOTAL_ROWS } from './MockWebSocket';
 import StatCard from './StatCard';
 import VirtualRow from './VirtualRow';
+import './realtime-dashboard.scss';
 
 // Main Dashboard Component
 export default function RealtimeDashboard() {
   const [data, setData] = useState(() =>
-    Array.from({ length: 10000 }, (_, i) => ({
+    Array.from({ length: TOTAL_ROWS }, (_, i) => ({
       id: i,
       name: `Asset ${String.fromCharCode(65 + (i % 26))}${Math.floor(i / 26)}`,
       value: Math.random() * 10000,
@@ -120,81 +121,25 @@ export default function RealtimeDashboard() {
   }, [data, visibleRange]);
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100vh',
-        background: 'linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%)',
-        color: '#fff',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="realtime-dashboard">
       {/* Header */}
-      <div
-        style={{
-          padding: '32px 40px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          background: 'rgba(0, 0, 0, 0.3)',
-          backdropFilter: 'blur(10px)',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
+      <div className="realtime-dashboard__header">
+        <div className="realtime-dashboard__header-top">
           <div>
-            <h1
-              style={{
-                margin: 0,
-                fontSize: '32px',
-                fontWeight: '800',
-                letterSpacing: '-0.5px',
-                background: 'linear-gradient(135deg, #00ff88 0%, #00ccff 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              REALTIME MARKET DATA
-            </h1>
-            <div
-              style={{
-                marginTop: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                fontSize: '13px',
-                color: '#888',
-                fontFamily: 'JetBrains Mono, monospace',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-              >
+            <h1 className="realtime-dashboard__title">REALTIME MARKET DATA</h1>
+            <div className="realtime-dashboard__subtitle">
+              <div className="realtime-dashboard__status-indicator">
                 <div
-                  style={{
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    backgroundColor: isConnected ? '#00ff88' : '#ff4466',
-                    boxShadow: `0 0 10px ${
-                      isConnected ? '#00ff88' : '#ff4466'
-                    }`,
-                    animation: 'pulse 2s ease-in-out infinite',
-                  }}
+                  className={`realtime-dashboard__status-dot ${
+                    isConnected
+                      ? 'realtime-dashboard__status-dot--connected'
+                      : 'realtime-dashboard__status-dot--disconnected'
+                  }`}
                 />
                 <span>{isConnected ? 'CONNECTED' : 'DISCONNECTED'}</span>
               </div>
               <span>•</span>
-              <span>10,000 ASSETS</span>
+              <span>{TOTAL_ROWS.toLocaleString()} ASSETS</span>
               <span>•</span>
               <span>LIVE UPDATES</span>
             </div>
@@ -202,14 +147,7 @@ export default function RealtimeDashboard() {
         </div>
 
         {/* Stats Cards */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '20px',
-            marginTop: '24px',
-          }}
-        >
+        <div className="realtime-dashboard__stats-grid">
           <StatCard
             icon={<DollarSign size={20} />}
             label="Total Value"
@@ -246,42 +184,34 @@ export default function RealtimeDashboard() {
       </div>
 
       {/* Table Header */}
-      <div
-        role="row"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '16px 24px',
-          background: 'rgba(0, 0, 0, 0.3)',
-          borderBottom: '2px solid rgba(0, 255, 136, 0.3)',
-          fontSize: '11px',
-          fontWeight: '700',
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          color: '#888',
-        }}
-      >
-        <div role="columnheader" style={{ flex: '0 0 100px' }}>
+      <div className="realtime-dashboard__table-header" role="row">
+        <div
+          role="columnheader"
+          className="realtime-dashboard__column-header realtime-dashboard__column-header--id"
+        >
           ID
         </div>
-        <div role="columnheader" style={{ flex: '1 1 auto' }}>
+        <div
+          role="columnheader"
+          className="realtime-dashboard__column-header realtime-dashboard__column-header--name"
+        >
           Asset Name
         </div>
         <div
           role="columnheader"
-          style={{ flex: '0 0 150px', textAlign: 'right' }}
+          className="realtime-dashboard__column-header realtime-dashboard__column-header--value"
         >
           Value
         </div>
         <div
           role="columnheader"
-          style={{ flex: '0 0 120px', textAlign: 'right' }}
+          className="realtime-dashboard__column-header realtime-dashboard__column-header--change"
         >
           Change
         </div>
         <div
           role="columnheader"
-          style={{ flex: '0 0 100px', textAlign: 'right' }}
+          className="realtime-dashboard__column-header realtime-dashboard__column-header--status"
         >
           Status
         </div>
@@ -294,17 +224,13 @@ export default function RealtimeDashboard() {
         role="table"
         aria-label="Real-time market data table"
         aria-rowcount={data.length}
-        style={{
-          height: `calc(100vh - 320px)`,
-          overflowY: 'auto',
-          position: 'relative',
-        }}
+        className="realtime-dashboard__table-container"
       >
         <div
           role="rowgroup"
+          className="realtime-dashboard__table-body"
           style={{
             height: `${data.length * ROW_HEIGHT}px`,
-            position: 'relative',
           }}
         >
           {visibleData.map((row, index) => {
@@ -314,11 +240,9 @@ export default function RealtimeDashboard() {
                 key={row.id}
                 data={row}
                 isFlashing={flashingRows.has(row.id)}
+                className="realtime-dashboard__row"
                 style={{
-                  position: 'absolute',
                   top: `${actualIndex * ROW_HEIGHT}px`,
-                  left: 0,
-                  right: 0,
                   height: `${ROW_HEIGHT}px`,
                 }}
               />
@@ -326,33 +250,6 @@ export default function RealtimeDashboard() {
           })}
         </div>
       </div>
-
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
-        
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-
-        /* Custom scrollbar */
-        div::-webkit-scrollbar {
-          width: 8px;
-        }
-        
-        div::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0.2);
-        }
-        
-        div::-webkit-scrollbar-thumb {
-          background: rgba(0, 255, 136, 0.3);
-          border-radius: 4px;
-        }
-        
-        div::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 255, 136, 0.5);
-        }
-      `}</style>
     </div>
   );
 }

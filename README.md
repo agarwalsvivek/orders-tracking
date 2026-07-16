@@ -57,7 +57,15 @@ npx nx serve backend
 
 Backend runs on `http://localhost:3333`
 
-### 3. Start Frontend Application (new terminal)
+### 3. Start Kafka Service (new terminal)
+
+```bash
+npx nx serve kafka-service
+```
+
+Kafka Service runs on `http://localhost:3334`
+
+### 4. Start Frontend Application (new terminal)
 
 ```bash
 npx nx serve frontend

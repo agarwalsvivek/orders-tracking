@@ -12,10 +12,16 @@ interface VirtualRowProps {
   data: RowData;
   style: React.CSSProperties;
   isFlashing: boolean;
+  className?: string;
 }
 
 // Virtualized row component
-const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
+const VirtualRow: React.FC<VirtualRowProps> = ({
+  data,
+  style,
+  isFlashing,
+  className,
+}) => {
   const changeColor =
     data.change > 0 ? '#00ff88' : data.change < 0 ? '#ff4466' : '#888';
   const statusColor =
@@ -28,6 +34,7 @@ const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
   return (
     <div
       role="row"
+      className={className}
       aria-label={`Asset ${data.name}, Value $${data.value.toFixed(
         2
       )}, Change ${data.change.toFixed(2)}%, Status ${data.status}`}
@@ -39,6 +46,9 @@ const VirtualRow: React.FC<VirtualRowProps> = ({ data, style, isFlashing }) => {
         borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
         transition: 'background-color 0.3s ease',
         backgroundColor: isFlashing ? 'rgba(0, 255, 136, 0.1)' : 'transparent',
+        position: 'absolute',
+        left: 0,
+        right: 0,
       }}
     >
       <div
