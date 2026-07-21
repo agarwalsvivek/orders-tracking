@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import RealtimeDashboard from './components/RealtimeDashboard';
+//import RealtimeDashboard from './components/RealtimeDashboard';
+
+import './app.css';
+import Search from './components/search-debounce/Search';
+import SearchDropdown from './components/search-debounce/SearchDropdown';
 
 export function App() {
   const [message, setMessage] = useState('');
@@ -27,10 +31,11 @@ export function App() {
   };
 
   return (
-    <div style={{ padding: 5 }}>
-      <div style={{ padding: 8 }}>
+    <div className="container">
+      <div className="kafka-container">
         <p>Hello World. Send a message to Kafka via Node backend:</p>
 
+        {/* This is kafka example */}
         <input
           type="text"
           value={message}
@@ -43,7 +48,12 @@ export function App() {
         {response && <p style={{ margin: 10 }}>{response}</p>}
       </div>
 
-      <RealtimeDashboard />
+      <div>
+        <Search />
+        <SearchDropdown />
+      </div>
+
+      {/* <RealtimeDashboard /> */}
     </div>
   );
 }

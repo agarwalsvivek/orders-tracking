@@ -1,0 +1,16 @@
+/* Your styles goes here. */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px;
+}
+
+
+.kafka-container {
+    padding: 8px;
+}
+
+.search-container {
+    padding: 8px;
+}
