@@ -14,3 +14,9 @@
 .search-container {
     padding: 8px;
 }
+
+.searchbar {
+    display: flex;
+    padding: 8px;
+    gap: 8px;
+}

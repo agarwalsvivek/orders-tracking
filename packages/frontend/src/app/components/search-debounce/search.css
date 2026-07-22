@@ -20,3 +20,12 @@ section {
 .hit {
     border: 1px solid gray;
 }
+
+.search-results {
+    display: flex;
+    flex-direction: column;
+}
+
+.options {
+    
+}

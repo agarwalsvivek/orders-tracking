@@ -48,7 +48,7 @@ export function App() {
         {response && <p style={{ margin: 10 }}>{response}</p>}
       </div>
 
-      <div>
+      <div className="searchbar">
         <Search />
         <SearchDropdown />
       </div>
